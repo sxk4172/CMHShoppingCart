@@ -114,7 +114,7 @@ public class CheckOut {
 		Cart cart = new Cart();
 		cart.checkTotal();
 
-		if (Cart.total > 0) { // Print cart and proceed o checkout only if a
+		if (Cart.total > 0) { // Print cart and proceed to checkout only if a
 								// product is added to the cart
 
 			cart.printCart();
@@ -137,7 +137,7 @@ public class CheckOut {
 		boolean temp = true;
 		while (temp) {
 			System.out
-					.println("\nEnter 1 to add Item\nEnter 2 to remove item\nEnter 3 to proceed to checkout");
+					.println("\nEnter 1 to add Item\nEnter 2 to remove item\nEnter 3 to proceed to checkout\nEnter 4 to Exit from shopping");
 			if (sc.hasNextInt()) {
 				choice = sc.nextInt();
 				switch (choice) {
@@ -170,7 +170,7 @@ public class CheckOut {
 									++quantity; // if product already exists
 												// increase count of quantity
 
-									cartList.remove(j); // remove the existsing
+									cartList.remove(j); // remove the existing
 														// product
 								}
 							}
@@ -244,7 +244,7 @@ public class CheckOut {
 					System.out.println("\nFinal Cart:\n");
 					Cart cartPrint = new Cart();
 
-					cartPrint.checkTotal(); // check if cart has atleast one
+					cartPrint.checkTotal(); // check if cart has at least one
 											// product
 
 					if (Cart.total > 0) {
@@ -266,6 +266,10 @@ public class CheckOut {
 						System.out.println("Cart Empty");
 					}
 
+					break;
+				case 4 :
+					System.out.println("Goodbye!!");
+					System.exit(0);
 					break;
 				default:
 					System.out.println("Enter 1 , 2 or 3 only");
