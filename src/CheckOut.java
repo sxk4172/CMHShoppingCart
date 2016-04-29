@@ -38,7 +38,7 @@ public class CheckOut {
 
 	public static void main(String args[]) {
 
-		boolean y = true;
+		boolean continuePurchase = true;
 		System.out.println("Welcome to CMH Shopping!!!");
 		System.out.println("Please Enter your name :");
 		customerName = sc.next();
@@ -46,7 +46,7 @@ public class CheckOut {
 
 		aadProducts(); // add predefined products to the catalog
 
-		while (y) {
+		while (continuePurchase) {
 			boolean temp = false;
 			System.out.println("Catalog : ");
 
@@ -99,10 +99,10 @@ public class CheckOut {
 				System.out.println("Continue Shopping y/n?");
 				String shopping = sc.next();
 				if (shopping.equals("n")) {
-					y = false;
+					continuePurchase = false;
 
 				} else if (shopping.equals("y")) {
-					y = true;
+					continuePurchase = true;
 				} else {
 					System.out.println("Enter y/n only");
 				}
