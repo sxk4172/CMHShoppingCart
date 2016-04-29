@@ -133,135 +133,147 @@ public class CheckOut {
 	 */
 
 	private static void proceedtoCheckout() {
-
+		int choice = 0;
 		boolean temp = true;
 		while (temp) {
 			System.out
 					.println("\nEnter 1 to add Item\nEnter 2 to remove item\nEnter 3 to proceed to checkout");
-			int choice = sc.nextInt();
-			switch (choice) {
-			case 1:
-				boolean productCheck = true;
+			if (sc.hasNextInt()) {
+				choice = sc.nextInt();
+				switch (choice) {
+				case 1:
+					boolean productCheck = true;
 
-				displayProducts();// display catalog by name, category or price
-									// range
+					displayProducts();// display catalog by name, category or
+										// price
+										// range
 
-				System.out
-						.println("Enter Product Number of Item to add to Cart :");
-				String prodNumber = sc.next();
-				for (int i = 0; i < items.size(); i++) {
-					int quantity = 1;
+					System.out
+							.println("Enter Product Number of Item to add to Cart :");
+					String prodNumber = sc.next();
+					for (int i = 0; i < items.size(); i++) {
+						int quantity = 1;
 
-					if ((items.get(i).productNumber).equals(prodNumber
-							.toUpperCase())) { // check if entered product
-												// number is in catalog
+						if ((items.get(i).productNumber).equals(prodNumber
+								.toUpperCase())) { // check if entered product
+													// number is in catalog
 
-						productCheck = false;
+							productCheck = false;
 
-						for (int j = 0; j < cartList.size(); j++) {
-							if ((cartList.get(j).productNumber)
-									.equals(prodNumber.toUpperCase())) { // add
-																			// product
-																			// to
-																			// cart
+							for (int j = 0; j < cartList.size(); j++) {
+								if ((cartList.get(j).productNumber)
+										.equals(prodNumber.toUpperCase())) { // add
+																				// product
+																				// to
+																				// cart
 
-								++quantity; // if product already exists
-											// increase count of quantity
+									++quantity; // if product already exists
+												// increase count of quantity
 
-								cartList.remove(j); // remove the existsing
-													// product
+									cartList.remove(j); // remove the existsing
+														// product
+								}
+							}
+							Cart cart = new Cart(items.get(i).productNumber,
+									items.get(i).productName,
+									items.get(i).productPrice, quantity);
+
+							cartList.add(cart); // add deleted product with
+												// increase
+												// in product quantity
+
+						}
+					}
+					if (productCheck == true) {
+						System.out.println("Enter Correct Number!!");
+					} else {
+						System.out.println("\nCart Modified:\n");
+						Cart c = new Cart();
+						c.printCart();
+					}
+					break;
+				case 2:
+					boolean check = true;
+					System.out
+							.println("Enter Product number of item to be removed");
+					String productNum = sc.next();
+					for (int j = 0; j < cartList.size(); j++) {
+
+						if (cartList.get(j).productNumber.equals(productNum)) {// check
+																				// if
+																				// entered
+																				// product
+																				// number
+																				// is
+																				// in
+																				// the
+																				// cart
+
+							check = false;
+
+							if (cartList.get(j).Quantity > 1) { // check if more
+																// than one
+																// quantity
+																// of a product
+
+								cartList.get(j).Quantity = (cartList.get(j).Quantity) - 1; // decrease
+																							// quantity
+																							// if
+																							// more
+																							// than
+																							// one
+
+							} else {
+
+								cartList.remove(j); // remove product if
+													// quantity is
+													// one
+
 							}
 						}
-						Cart cart = new Cart(items.get(i).productNumber,
-								items.get(i).productName,
-								items.get(i).productPrice, quantity);
-
-						cartList.add(cart); // add deleted product with increase
-											// in product quantity
-
 					}
-				}
-				if (productCheck == true) {
-					System.out.println("Enter Correct Number!!");
-				} else {
-					System.out.println("\nCart Modified:\n");
-					Cart c = new Cart();
-					c.printCart();
-				}
-				break;
-			case 2:
-				boolean check = true;
-				System.out
-						.println("Enter Product number of item to be removed");
-				String productNum = sc.next();
-				for (int j = 0; j < cartList.size(); j++) {
-
-					if (cartList.get(j).productNumber.equals(productNum)) {// check
-																			// if
-																			// entered
-																			// product
-																			// number
-																			// is
-																			// in
-																			// the
-																			// cart
-
-						check = false;
-
-						if (cartList.get(j).Quantity > 1) { // check if more
-															// than one quantity
-															// of a product
-
-							cartList.get(j).Quantity = (cartList.get(j).Quantity) - 1; // decrease
-																						// quantity
-																						// if
-																						// more
-																						// than
-																						// one
-
-						} else {
-
-							cartList.remove(j); // remove product if quantity is
-												// one
-
-						}
-					}
-				}
-				if (check == true) {
-					System.out.println("Enter Correct Number!!");
-				} else {
-					System.out.println("\nCart Modified:\n");
-					Cart cartModified = new Cart();
-					cartModified.printCart();
-				}
-				break;
-			case 3:
-				System.out.println("\nFinal Cart:\n");
-				Cart cartPrint = new Cart();
-
-				cartPrint.checkTotal(); // check if cart has atleast one product
-
-				if (Cart.total > 0) {
-					cartPrint.printCart();
-					System.out.println("Do you want to Proceed to checkout?");
-					String checkOut = sc.next();
-					if (checkOut.equalsIgnoreCase("y")) {
-						Billing billing = new Billing();
-						billing.enterShippingDetails();
-						billing.generateBill();
-						temp = false;
-					} else if (checkOut.equalsIgnoreCase("n")) {
-						temp = true;
+					if (check == true) {
+						System.out.println("Enter Correct Number!!");
 					} else {
-						System.out.println("Enter y/n only!!!");
+						System.out.println("\nCart Modified:\n");
+						Cart cartModified = new Cart();
+						cartModified.printCart();
 					}
-				} else {
-					System.out.println("Cart Empty");
-				}
+					break;
+				case 3:
+					System.out.println("\nFinal Cart:\n");
+					Cart cartPrint = new Cart();
 
-				break;
-			default:
-				System.out.println("Enter 1 , 2 or 3 only");
+					cartPrint.checkTotal(); // check if cart has atleast one
+											// product
+
+					if (Cart.total > 0) {
+						cartPrint.printCart();
+						System.out
+								.println("Do you want to Proceed to checkout?");
+						String checkOut = sc.next();
+						if (checkOut.equalsIgnoreCase("y")) {
+							Billing billing = new Billing();
+							billing.enterShippingDetails();
+							billing.generateBill();
+							temp = false;
+						} else if (checkOut.equalsIgnoreCase("n")) {
+							temp = true;
+						} else {
+							System.out.println("Enter y/n only!!!");
+						}
+					} else {
+						System.out.println("Cart Empty");
+					}
+
+					break;
+				default:
+					System.out.println("Enter 1 , 2 or 3 only");
+				}
+			} else {
+				System.out.println("You enetered a non-numeric field");
+				sc.next();
+				continue;
 			}
 		}
 	}
@@ -274,68 +286,105 @@ public class CheckOut {
 
 	private static void displayProducts() {
 		String category;
+		int choice = 0;
 		boolean temp = true;
 		while (temp) {
 			System.out.println("Enter 1 to Display Items by Name");
 			System.out.println("Enter 2 to Display Items by Category");
 			System.out.println("Enter 3 to Display Items by Price Range");
-			int choice = sc.nextInt();
-			switch (choice) {
-			case 1:
 
-				List<Product> nameList = new ArrayList<Product>(items); // display
-																		// products
-																		// in
-																		// ascending
-																		// order
-																		// of
-																		// name
+			if (sc.hasNextInt()) {
+				choice = sc.nextInt();
 
-				if (nameList.size() > 0) {
-					Collections.sort(nameList, new Comparator<Product>() {
-						@Override
-						public int compare(Product o1, Product o2) {
-							return o1.productName.compareTo(o2.productName);
-						}
-					});
-				}
-				print(nameList);
-				temp = false;
-				break;
-			case 2:
-				boolean temp1 = true;
-				while (temp1) {
-					System.out
-							.println("\nEnter 1 for Food\nEnter 2 for Clothing\nEnter 3 for Utilities");
-					int categoryChoice = sc.nextInt();
-					if (categoryChoice == 1) {
-						category = "Food";
-						printCategory(category);
-						temp1 = false;
-					} else if (categoryChoice == 2) {
-						category = "Clothing";
-						printCategory(category);
-						temp1 = false;
-					} else if (categoryChoice == 3) {
-						category = "Utilities";
-						printCategory(category);
-						temp1 = false;
-					} else {
-						System.out.println("Error entered wrong number");
+				switch (choice) {
+				case 1:
+
+					List<Product> nameList = new ArrayList<Product>(items); // display
+																			// products
+																			// in
+																			// ascending
+																			// order
+																			// of
+																			// name
+
+					if (nameList.size() > 0) {
+						Collections.sort(nameList, new Comparator<Product>() {
+							@Override
+							public int compare(Product o1, Product o2) {
+								return o1.productName.compareTo(o2.productName);
+							}
+						});
 					}
+					print(nameList);
 					temp = false;
+					break;
+				case 2:
+					int categoryChoice = 0;
+					boolean temp1 = true;
+					while (temp1) {
+						System.out
+								.println("\nEnter 1 for Food\nEnter 2 for Clothing\nEnter 3 for Utilities");
+
+						if (sc.hasNextInt()) {
+							categoryChoice = sc.nextInt();
+
+							if (categoryChoice == 1) {
+								category = "Food";
+								printCategory(category);
+								temp1 = false;
+							} else if (categoryChoice == 2) {
+								category = "Clothing";
+								printCategory(category);
+								temp1 = false;
+							} else if (categoryChoice == 3) {
+								category = "Utilities";
+								printCategory(category);
+								temp1 = false;
+							} else {
+								System.out
+										.println("Error entered wrong number");
+							}
+							temp = false;
+						} else {
+							System.out
+									.println("You enetered a non-numeric value");
+							sc.next();
+							continue;
+						}
+					}
+					break;
+				case 3:
+					int priceFrom = 0;
+					int priceTo = 0;
+					System.out.println("Enter Price Range from :");
+					if (sc.hasNextInt()) {
+						priceFrom = sc.nextInt();
+					} else {
+						System.out
+								.println("You have entered a non numeric field value");
+						sc.next();
+						continue;
+					}
+					System.out.println("Enter Price Range To :");
+					if (sc.hasNextInt()) {
+						priceTo = sc.nextInt();
+					} else {
+						System.out
+								.println("You have entered a non numeric field value");
+						sc.next();
+						continue;
+					}
+					temp = printPriceRange(priceFrom, priceTo);
+					break;
+
+				default:
+					System.out.println("Enter 1, 2 or 3 only!!");
+					break;
 				}
-				break;
-			case 3:
-				System.out.println("Enter Price Range from :");
-				int priceFrom = sc.nextInt();
-				System.out.println("Enter Price Range To :");
-				int priceTo = sc.nextInt();
-				temp = printPriceRange(priceFrom, priceTo);
-				break;
-			default:
-				System.out.println("Enter 1, 2 or 3 only!!");
-				break;
+			} else {
+				System.out.println("You entered a non numeric field");
+				sc.next();
+				continue;
 			}
 		}
 	}
